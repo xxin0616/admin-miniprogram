@@ -1,0 +1,8 @@
+<!--pages/other/index.wxml-->
+<view>
+  <sider type="other"></sider> 
+  <view class="content-wrapper">
+    <text>pages/other/index.wxml</text>
+  </view>
+</view>
+

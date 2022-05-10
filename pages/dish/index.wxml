@@ -1,0 +1,7 @@
+<!--pages/dish/index.wxml-->
+<view>
+  <sider type="dish"></sider> 
+  <view class="content-wrapper">
+    <text>pages/dish/index.wxml</text>
+  </view>
+</view>

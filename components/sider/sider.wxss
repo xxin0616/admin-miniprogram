@@ -1,0 +1,135 @@
+/* components/sider/sider.wxss */
+/* @import "/colorui/main.wxss";
+@import "/colorui/icon.wxss"; */
+
+
+.cu-list+.cu-list {
+	margin-top: 30rpx
+}
+.cu-list.menu>.cu-item .content {
+	font-size: 30rpx;
+	line-height: 1.6em;
+	flex: 1
+}
+
+.cu-modal.drawer-modal {
+    transform: scale(1);
+    display: flex;
+}
+.cu-modal.show {
+  opacity: 1;
+  transition-duration: 0.3s;
+  -ms-transform: scale(1);
+  transform: scale(1);
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: auto;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.cu-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1110;
+  opacity: 0;
+  outline: 0;
+  text-align: center;
+  -ms-transform: scale(1.185);
+  transform: scale(1.185);
+  backface-visibility: hidden;
+  perspective: 2000rpx;
+  background: rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease-in-out 0s;
+  pointer-events: none;
+}
+.cu-modal.drawer-modal.show .cu-dialog {
+  transform: translateX(0%);
+}
+.cu-modal.drawer-modal .cu-dialog {
+  height: 100%;
+  min-width: 200rpx;
+  border-radius: 0;
+  margin: initial;
+  transition-duration: 0.3s;
+}
+.cu-dialog {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: auto;
+  margin-right: auto;
+  width: 680rpx;
+  max-width: 100%;
+  background-color: #f8f8f8;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+
+.cu-list.menu {
+  display: block;
+  overflow: hidden;
+}
+.cu-list>.cu-item {
+	transition: all .6s ease-in-out 0s;
+	transform: translateX(0rpx)
+}
+.blue-text {
+  color: rgba(75,129,255,1) !important;
+}
+.fixed-wrapper{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100rpx;
+  margin-right: 10rpx;
+  background-color: #f8f8f8;
+}
+.cu-list.menu>.cu-item {
+  position: relative;
+  display: flex;
+  padding: 0 30rpx;
+  min-height: 100rpx;
+  background-color: var(--white);
+  justify-content: space-between;
+  align-items: center;
+}
+.operation-pos{
+  position: absolute;
+  bottom: 20rpx;
+  right: 15rpx;
+}
+.sider {
+  width: 260rpx !important;
+  min-width: 260rpx !important;
+  flex-basis: 34%;
+}
+.menu-icon {
+  width: 34rpx;
+  height: 34rpx;
+  margin-right: 10rpx;
+}
+.menu-operation-icon {
+  width: 24rpx;
+  height: 24rpx;
+}
+.item-wrapper{
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+}
+.menu-text {
+  height: 40rpx;
+  display: block;
+  overflow-wrap: break-word;
+  color: rgba(102,102,102,1);
+  font-size: 28rpx;
+  font-family: PingFangSC-Medium;
+  white-space: nowrap;
+  line-height: 40rpx;
+  text-align: left;
+}

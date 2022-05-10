@@ -1,0 +1,189 @@
+@import "colorui/main.wxss";
+@import "colorui/icon.wxss";
+
+page {
+  background-color: "#F1F1F1";
+}
+.header-add-pos {
+  position: absolute;
+  right: 250rpx;
+}
+.expand-area{
+  width: 550rpx;
+  position: relative;
+  margin-left: 45rpx;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+}
+.table-expand-line {
+  margin-top: 10rpx;
+}
+.operation-icon {
+  width: 44rpx;
+  height: 44rpx;
+}
+.small-operation-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 5rpx;
+}
+.table-header-text {
+  height: 40rpx;
+  display: block;
+  overflow-wrap: break-word;
+  color: rgba(102,102,102,1);
+  font-size: 28rpx;
+  font-family: PingFangSC-Medium;
+  white-space: nowrap;
+  line-height: 40rpx;
+  text-align: left;
+  overflow: hidden;
+}
+.text-wrapper  >text{
+  overflow-wrap: break-word;
+  color: rgba(0,0,0,0.9);
+  font-size: 32rpx;
+  font-family: PingFangSC-Regular;
+  white-space: nowrap;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+}
+.search-text {
+  height: 40rpx;
+  display: block;
+  overflow-wrap: break-word;
+  color: rgba(153,153,153,1);
+  font-size: 28rpx;
+  font-family: PingFangSC-Regular;
+  white-space: nowrap;
+  line-height: 40rpx;
+  text-align: left;
+}
+.table-expand-text {
+  height: 40rpx;
+  display: block;
+  overflow-wrap: break-word;
+  color: rgba(0,0,0,0.9);
+  font-size: 28rpx;
+  font-family: PingFangSC-Regular;
+  white-space: nowrap;
+  line-height: 40rpx;
+  text-align: left;
+}
+.table-expand-title {
+  height: 40rpx;
+  display: block;
+  overflow-wrap: break-word;
+  font-size: 28rpx;
+  font-family: PingFangSC-Regular;
+  white-space: nowrap;
+  line-height: 40rpx;
+  text-align: left;
+  color: rgba(153,153,153,0.9);
+}
+.content-header {
+  margin-top: 20rpx;
+  display: flex;
+  align-items: center;
+}
+.content-header > text {
+  display: block;
+  overflow-wrap: break-word;
+  color: rgba(51,51,51,1);
+  font-size: 32rpx;
+  font-family: PingFangSC-Medium;
+  white-space: nowrap;
+  text-align: left;
+}
+.red-text {
+  display: block;
+  overflow-wrap: break-word;
+  color: rgba(255,93,93,1) !important;
+  font-size: 32rpx;
+  font-family: PingFangSC-Medium;
+  white-space: nowrap;
+  text-align: left;
+  margin-left: 20rpx;
+}
+.blue-text {
+  color: rgba(75,129,255,1);
+}
+.content-wrapper{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 635rpx;
+  background-color: #f8f8f8;
+  padding: 20rpx;
+}
+.excel-bnt {
+  height: 64rpx;
+  border-radius: 6rpx;
+  border: 1px solid rgba(221,221,221,1);
+  background-color: rgba(255,255,255,1);
+  width: 192rpx;
+  position: absolute;
+  right: 20rpx;
+}
+.excel-bnt > text {
+  width: 124rpx;
+  height: 64rpx;
+  display: block;
+  overflow-wrap: break-word;
+  color: rgba(102,102,102,1);
+  font-size: 28rpx;
+  font-family: PingFangSC-Regular;
+  white-space: nowrap;
+  line-height: 64rpx;
+  text-align: center;
+}
+.flex{
+  display: flex;
+  align-items: center;
+}
+.search-img {
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 10rpx;
+}
+.search-box{
+  height: 64rpx;
+  border-radius: 32rpx;
+  background-color: rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  width: 580rpx;
+  margin: 30rpx 0 0 10rpx;
+  padding-left: 10rpx;
+}
+.search-box > input {
+  width: 490rpx;
+}
+.table {
+  display: flex;
+  flex-direction: column;     /* 排列形式: 向下 */
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.tr {
+  width: 100%;   
+  display: flex;
+  flex-direction: row;
+  margin-top: 10rpx;
+}
+.tr > view{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;            /* 自动换行 */
+  align-items: center;        /* 交叉轴居中 */
+  justify-content: center;
+}
+.td0 {
+  width: 8%;
+}
+.td0 > image {
+  height: 26rpx;
+}

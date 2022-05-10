@@ -1,0 +1,6 @@
+<view>
+  <sider type="home"></sider> 
+  <view class="content-wrapper">
+    <text>首页</text>
+  </view>
+</view>

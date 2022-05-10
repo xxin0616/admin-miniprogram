@@ -1,0 +1,136 @@
+<!--components/sider/sider.wxml-->
+<view class="fixed-wrapper" bindtap="showModal">
+  <view class="cu-list menu">
+      <view class="cu-item">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/home{{current == 'home' ? '-active':''}}.png" class="menu-icon"></image>
+          </view>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/order{{current == 'order' ? '-active':''}}.png" class="menu-icon"></image>
+          </view>
+        </view>
+      </view>
+      <view class="cu-item" bindtap="expandDish">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/dish{{current.includes('dish')? '-active':''}}.png" class="menu-icon"></image>
+          </view>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/user{{current=='user'? '-active':''}}.png" class="menu-icon"></image>
+
+          </view>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/campany{{current == 'company'? '-active':''}}.png" class="menu-icon"></image>
+
+          </view>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/other{{current.includes('other')? '-active':''}}.png" class="menu-icon"></image>
+          </view>
+        </view>
+      </view>
+  </view>
+  <image src="/static/icons/expand.png" class="menu-icon operation-pos"></image>
+</view>
+<view class="cu-modal drawer-modal justify-start {{modalName=='DrawerModalL'?'show':''}}" bindtap="hideModal">
+  <view class="cu-dialog basis-lg sider" catchtap style="top:0px;height:100vh">
+    <view class="cu-list menu">
+      <view class="cu-item" bindtap="toHomePage">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/home{{current == 'home' ? '-active':''}}.png"  class="menu-icon"></image>
+            <text class="menu-text {{current == 'home' ? 'blue-text':''}}">首页</text>
+          </view>
+        </view>
+      </view>
+      <view class="cu-item" bindtap="toOrderPage">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/order{{current.includes('order')? '-active':''}}.png" class="menu-icon"></image>
+            <text class="menu-text {{current == 'order' ? 'blue-text':''}}">订单管理</text>
+          </view>
+        </view>
+      </view>
+      <view class="cu-item" bindtap="expandDish">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/dish{{current.includes('dish')? '-active':''}}.png" class="menu-icon"></image>
+            <text class="menu-text">菜品管理</text>
+          </view>
+        </view>
+        <view class="action">
+          <image mode="aspectFit" src="{{dish_expand?'/static/icons/arrow-down.png':'/static/icons/arrow-right.png'}}" class="menu-operation-icon"></image>
+        </view>
+      </view>
+      <view hidden="{{!dish_expand}}">
+        <view class="cu-list menu">
+          <view class="cu-item" bindtap="toTypePage">
+            <view class="content">
+              <view class="item-wrapper">
+                <image src="" class="menu-icon"></image>
+                <text class="menu-text {{current == 'dish-type' ? 'blue-text':''}}">品类管理</text>
+              </view>
+            </view>
+          </view>
+          <view class="cu-item" bindtap="toDishPage">
+            <view class="content">
+              <view class="item-wrapper">
+                <image src="" class="menu-icon"></image>
+                <text class="menu-text {{current == 'dish-dish' ? 'blue-text':''}}">菜品管理</text>
+              </view>
+            </view>
+          </view>
+          <view class="cu-item" bindtap="toSetPage">
+            <view class="content">
+              <view class="item-wrapper">
+                <image src="" class="menu-icon"></image>
+                <text class="menu-text {{current == 'dish-set' ? 'blue-text':''}}">套餐管理</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="cu-item" bindtap="toUserPage">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/user{{current.includes('user')? '-active':''}}.png" class="menu-icon"></image>
+            <text class="menu-text {{current == 'user' ? 'blue-text':''}}">用户管理</text>
+          </view>
+        </view>
+      </view>
+      <view class="cu-item" bindtap="toCompanyPage">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/campany{{current == 'company'? '-active':''}}.png" class="menu-icon"></image>
+            <text class="menu-text {{current == 'company' ? 'blue-text':''}}">公司管理</text>
+          </view>
+        </view>
+      </view>
+      <view class="cu-item" bindtap="toOtherPage">
+        <view class="content">
+          <view class="item-wrapper">
+            <image src="/static/icons/other{{current.includes('other')? '-active':''}}.png" class="menu-icon"></image>
+            <text class="menu-text {{current == 'other' ? 'blue-text':''}}">其他设置</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <image src="/static/icons/goback.png" class="menu-icon operation-pos" bindtap="hideModal"></image>
+  </view>
+</view>

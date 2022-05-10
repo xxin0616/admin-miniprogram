@@ -1,0 +1,10 @@
+/* pages/type/index.wxss */
+.th1, .td1 {
+  width: 40%;
+}
+.th2, .td2 {
+  width: 20%;
+}
+.th3, .td3 {
+  width: 30%;
+}

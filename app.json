@@ -1,0 +1,22 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/order/index",
+    "pages/dish/index",
+    "pages/set/index",
+    "pages/type/index",
+    "pages/users/index",
+    "pages/company/index",
+    "pages/other/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4B81FF",
+    "navigationBarTitleText": "弗图管理端",
+    "navigationBarTextStyle": "white"
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  },
+  "sitemapLocation": "sitemap.json"
+}

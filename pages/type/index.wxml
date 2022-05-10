@@ -1,0 +1,91 @@
+<!--pages/type/index.wxml-->
+<view>
+  <sider type="dish-type"></sider> 
+  <view class="content-wrapper">
+    <view class="content-header">
+      <text>品类数量</text>
+      <text class="red-text">5</text>
+      <image src="/static/icons/add.png" class="operation-icon header-add-pos" data-mode="{{-1}}" bindtap="openAddDialog"></image>
+      <button class="excel-bnt" bindtap="handleExport">
+        <text>导出excel</text>
+      </button>
+    </view>
+    <view class="search-wrapper">
+      <view class="search-box">
+        <image src="/static/icons/search.png" class="search-img"></image>
+        <input type="text" placeholder="请输入品类名称或ID" placeholder-class="search-text" maxlength="50" bindblur="handleSearch" bindconfirm="handleSeach"/>
+      </view>
+    </view>
+
+    <view class="table">
+      <view class="tr">
+        <view class="td0"></view>
+        <view class="th1"><text class="table-header-text">品类名字</text></view>
+        <view class="th2"><text class="table-header-text">菜品数量</text></view>
+        <view class="th3"><text class="table-header-text">操作</text></view>
+      </view>
+        <!-- 内容 -->
+        <!-- 除表头外纵向滑动 -->
+      <scroll-view class="tableY" scroll-y style="height: 900rpx;">
+        <view wx:for="{{tableData}}" wx:key="index">
+          <view>
+            <view class="tr">
+              <view class="td0" data-active="{{index}}" bindtap="changeActive"><image mode="aspectFit" src="/static/icons/arrow-{{active == index? 'down':'right'}}.png" ></image></view>
+              <view class="td1 text-wrapper"><text>kjdfkjhgffgbgfdhghfh</text></view>
+              <view class="td2 text-wrapper"><text>a'd's'f'v'g'd'gadsfvgdg</text> </view>
+              <view class="td3 text-wrapper">
+                <image src="/static/icons/edit.png" class="small-operation-icon" data-mode="{{index}}" bindtap="openAddDialog"></image>
+                <image src="/static/icons/delete.png" class="small-operation-icon" data-active="{{index}}" bindtap="handleDelete"></image>
+              </view>
+            </view>
+            <view class="expand-area" hidden="{{!(active == index)}}">
+              <view>
+                新增菜品
+                <image src="/static/icons/add.png" mode="aspectFit" class="operation-icon"></image>
+              </view>
+              <view class="flex table-expand-line">
+                <view style="width:20%" class="table-expand-title">菜品1</view>
+                <view class="table-expand-text"> 黑上演</view>
+              </view>
+              <view class="flex table-expand-line">
+                <view style="width:20%" class="table-expand-title">菜品1</view>
+                <view class="table-expand-text"> 黑上演</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
+
+<!-- 新增、修改品类dialog -->
+<view class="cu-modal {{ showAddDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">{{mode < 0? '新增品类':'修改品类'}}</view>
+      <view class="action" bindtap="closeAddDialog">
+        <text class="cuIcon-close text-grey"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <form action="">
+        <view class="cu-form-group">
+          <view class="title">品类名字</view>
+          <input placeholder="输入品类的名字"></input>
+        </view>
+      </form>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeAddDialog">取消</button>
+        <button class="cu-btn bg-blue margin-left" bindtap="hideModal">确定</button>
+
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 导出到excel dialog -->
+
+<!-- 为品类新增菜品dialog -->

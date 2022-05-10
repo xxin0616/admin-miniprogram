@@ -1,0 +1,7 @@
+<!--pages/order/index.wxml-->
+<view>
+  <sider type="order"></sider> 
+  <view class="content-wrapper">
+    <text>pages/order/index.wxml</text>
+  </view>
+</view>

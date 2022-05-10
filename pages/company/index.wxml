@@ -1,0 +1,7 @@
+<!--pages/company/index.wxml-->
+<view>
+  <sider _current="company"></sider> 
+  <view class="content-wrapper">
+    <text>pages/company/index.wxml</text>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+<!--pages/users/index.wxml-->
+<view>
+  <sider type="user"></sider> 
+  <view class="content-wrapper">
+    <text>pages/users/index.wxml</text>
+  </view>
+</view>
