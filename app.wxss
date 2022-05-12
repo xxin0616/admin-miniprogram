@@ -25,7 +25,7 @@ page {
 .small-operation-icon {
   width: 32rpx;
   height: 32rpx;
-  margin-right: 5rpx;
+  margin-left: 20rpx;
 }
 .table-header-text {
   height: 40rpx;
@@ -62,17 +62,16 @@ page {
   text-align: left;
 }
 .table-expand-text {
-  height: 40rpx;
+  width: 350rpx;
   display: block;
-  overflow-wrap: break-word;
   color: rgba(0,0,0,0.9);
   font-size: 28rpx;
   font-family: PingFangSC-Regular;
-  white-space: nowrap;
   line-height: 40rpx;
   text-align: left;
 }
 .table-expand-title {
+  width: 120rpx;
   height: 40rpx;
   display: block;
   overflow-wrap: break-word;
@@ -169,10 +168,21 @@ page {
   margin-bottom: 20px;
 }
 .tr {
-  width: 100%;   
+  width: 100%;
+  height: 80rpx;
   display: flex;
   flex-direction: row;
-  margin-top: 10rpx;
+}
+.empty-table {
+  margin-top: 100rpx;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cu-form-group > input {
+  text-align: left;
+}
+.cu-form-group > textarea {
+  text-align: left;
 }
 .tr > view{
   display: flex;

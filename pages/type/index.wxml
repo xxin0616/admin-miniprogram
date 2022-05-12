@@ -1,10 +1,10 @@
 <!--pages/type/index.wxml-->
 <view>
-  <sider type="dish-type"></sider> 
+  <sider _current="dish-type"></sider> 
   <view class="content-wrapper">
     <view class="content-header">
       <text>品类数量</text>
-      <text class="red-text">5</text>
+      <text class="red-text">{{totalNum}}</text>
       <image src="/static/icons/add.png" class="operation-icon header-add-pos" data-mode="{{-1}}" bindtap="openAddDialog"></image>
       <button class="excel-bnt" bindtap="handleExport">
         <text>导出excel</text>
@@ -13,7 +13,8 @@
     <view class="search-wrapper">
       <view class="search-box">
         <image src="/static/icons/search.png" class="search-img"></image>
-        <input type="text" placeholder="请输入品类名称或ID" placeholder-class="search-text" maxlength="50" bindblur="handleSearch" bindconfirm="handleSeach"/>
+        <input type="text" value="{{searchText}}" placeholder="请输入品类名称或ID" placeholder-class="search-text" maxlength="50" bindblur="handleSearch" bindconfirm="handleSeach" bindblur="handleSeach"/>
+        <text class="cuIcon-close lg text-gray" style="margin-right: 20rpx;" bindtap="handleCloseSeach"></text>
       </view>
     </view>
 
@@ -26,35 +27,36 @@
       </view>
         <!-- 内容 -->
         <!-- 除表头外纵向滑动 -->
-      <scroll-view class="tableY" scroll-y style="height: 900rpx;">
-        <view wx:for="{{tableData}}" wx:key="index">
+      <scroll-view class="tableY" scroll-y style="height: 900rpx;" wx:if="{{allData.length > 0}}">
+        <view wx:for="{{tableMode?allData:searchData}}" wx:key="index">
           <view>
             <view class="tr">
               <view class="td0" data-active="{{index}}" bindtap="changeActive"><image mode="aspectFit" src="/static/icons/arrow-{{active == index? 'down':'right'}}.png" ></image></view>
-              <view class="td1 text-wrapper"><text>kjdfkjhgffgbgfdhghfh</text></view>
-              <view class="td2 text-wrapper"><text>a'd's'f'v'g'd'gadsfvgdg</text> </view>
+              <view class="td1 text-wrapper" bindtap="changeActive"><text>{{item.name}}</text></view>
+              <view class="td2 text-wrapper" bindtap="changeActive"><text>{{item.count}}</text> </view>
               <view class="td3 text-wrapper">
-                <image src="/static/icons/edit.png" class="small-operation-icon" data-mode="{{index}}" bindtap="openAddDialog"></image>
-                <image src="/static/icons/delete.png" class="small-operation-icon" data-active="{{index}}" bindtap="handleDelete"></image>
+                <image src="/static/icons/edit.png" class="small-operation-icon" data-mode="{{index}}" data-id="{{item._id}}" data-name="{{item.name}}" bindtap="openAddDialog"></image>
+                <image src="/static/icons/delete.png" class="small-operation-icon" data-id="{{item._id}}" data-name="{{item.name}}" data-mode = "{{index}}" bindtap="handleDelete"></image>
               </view>
             </view>
-            <view class="expand-area" hidden="{{!(active == index)}}">
+            <view class="expand-area" hidden="{{!(active == index)}}" bindtap="openTypeDialog" data-mode="{{index}}">
               <view>
                 新增菜品
                 <image src="/static/icons/add.png" mode="aspectFit" class="operation-icon"></image>
               </view>
-              <view class="flex table-expand-line">
-                <view style="width:20%" class="table-expand-title">菜品1</view>
-                <view class="table-expand-text"> 黑上演</view>
-              </view>
-              <view class="flex table-expand-line">
-                <view style="width:20%" class="table-expand-title">菜品1</view>
-                <view class="table-expand-text"> 黑上演</view>
+              <view wx:for="{{item.sort}}" wx:for-index="id" wx:for-item="dish">
+                <view class="flex table-expand-line">
+                  <view style="width:20%" class="table-expand-title">菜品{{id + 1}}</view>
+                  <view class="table-expand-text"> {{dish.name}}</view>
+                </view>
               </view>
             </view>
           </view>
         </view>
       </scroll-view>
+      <view wx:else="" class="empty-table">
+        暂无数据，请添加品类
+      </view >
     </view>
   </view>
 </view>
@@ -69,18 +71,17 @@
       </view>
     </view>
     <view class="padding-xl">
-      <form action="">
+      <form action="" bindsubmit="handleSubmitAddDialog">
         <view class="cu-form-group">
           <view class="title">品类名字</view>
-          <input placeholder="输入品类的名字"></input>
+          <input id="name" value="{{addForm.name}}" focus="{{true}}" placeholder="输入品类的名字" bindinput="onInput" bindconfirm="handleSubmitAddDialog" maxlength="20"></input>
         </view>
       </form>
     </view>
     <view class="cu-bar bg-white justify-end">
       <view class="action">
         <button class="cu-btn line-blue text-blue" bindtap="closeAddDialog">取消</button>
-        <button class="cu-btn bg-blue margin-left" bindtap="hideModal">确定</button>
-
+        <button class="cu-btn bg-blue margin-left" bindtap="handleSubmitAddDialog">确定</button>
       </view>
     </view>
   </view>
@@ -89,3 +90,29 @@
 <!-- 导出到excel dialog -->
 
 <!-- 为品类新增菜品dialog -->
+<view class="cu-modal {{ showTypeDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">为添加菜品</view>
+      <view class="action" bindtap="closeDishDialog">
+        <text class="cuIcon-close text-grey"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+        <checkbox-group bindchange="checkboxChange">
+          <view wx:for="{{dishForm}}" wx:key="{{index}}">
+            <view class="cu-form-group">
+              <view class="title">{{item.name}}</view>
+              <checkbox value="{{index}}" checked="{{item.value}}"></checkbox>
+            </view>
+          </view>
+        </checkbox-group>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeDishDialog">取消</button>
+        <button class="cu-btn bg-blue margin-left" bindtap="handleSubmitDishDialog">确定</button>
+      </view>
+    </view>
+  </view>
+</view>

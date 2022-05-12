@@ -1,7 +1,321 @@
 <!--pages/dish/index.wxml-->
 <view>
-  <sider type="dish"></sider> 
+  <sider _current="dish-dish"></sider> 
   <view class="content-wrapper">
-    <text>pages/dish/index.wxml</text>
+    <view class="content-header">
+      <text>菜品数量</text>
+      <text class="red-text">{{totalNum}}</text>
+      <image src="/static/icons/add.png" class="operation-icon header-add-pos" data-mode="{{-1}}" bindtap="openAddDialog"></image>
+      <button class="excel-bnt" bindtap="handleExport">
+        <text>导出excel</text>
+      </button>
+    </view>
+    <view class="search-wrapper">
+      <view class="search-box">
+        <image src="/static/icons/search.png" class="search-img"></image>
+        <input type="text" value="{{searchText}}" placeholder="请输入菜品名称" placeholder-class="search-text" maxlength="50" bindblur="handleSearch" bindconfirm="handleSeach" bindblur="handleSeach"/>
+        <text class="cuIcon-close lg text-gray" style="margin-right: 20rpx;" bindtap="handleCloseSeach"></text>
+      </view>
+    </view>
+
+    <view class="table">
+      <view class="tr">
+        <view class="td0"></view>
+        <view class="th1"><text class="table-header-text">名字</text></view>
+        <view class="th2"><text class="table-header-text">价格</text></view>
+        <view class="th3"><text class="table-header-text">操作</text></view>
+      </view>
+        <!-- 内容 -->
+        <!-- 除表头外纵向滑动 -->
+      <scroll-view class="tableY" scroll-y style="height: 900rpx;" wx:if="{{allData.length > 0}}">
+        <view wx:for="{{tableMode?allData:searchData}}" wx:key="index">
+          <view>
+            <view class="tr">
+              <view class="td0" data-active="{{index}}" bindtap="changeActive"><image mode="aspectFit" src="/static/icons/arrow-{{active == index? 'down':'right'}}.png" ></image></view>
+              <view class="td1 text-wrapper" bindtap="changeActive"><text>{{item.name}}</text></view>
+              <view class="td2 text-wrapper" bindtap="changeActive"><text>{{item.price}}</text> </view>
+              <view class="td3 text-wrapper">
+                <image src="/static/icons/edit.png" class="small-operation-icon" data-mode="{{index}}" bindtap="openAddDialog"></image>
+                <image src="/static/icons/delete.png" class="small-operation-icon" data-id="{{item._id}}" data-name="{{item.name}}" bindtap="handleDelete"></image>
+              </view>
+            </view>
+            <view class="expand-area" hidden="{{!(active == index)}}">
+              <view bindtap="openAddDishDialog">
+                详细信息
+              </view>
+              <view class="flex table-expand-line">
+                <view class="table-expand-title">图片</view>
+                <image src="{{item.imgSrc}}" class="imgwrapper" mode="aspectFit"></image>
+              </view>
+              <view class="flex table-expand-line">
+                <view class="table-expand-title">销量</view>
+                <view class="table-expand-text"> {{item.sales}}</view>
+              </view>
+              <view class="flex table-expand-line">
+                <view class="table-expand-title">偏好</view>
+                <view class="table-expand-text"> {{item.choiceString}}</view>
+                <image src="/static/icons/edit.png" class="small-operation-icon" data-mode="{{index}}" bindtap="openChoiceDialog"></image>
+              </view>
+              <view class="flex table-expand-line">
+                <view class="table-expand-title">健康</view>
+                <view class="table-expand-text"> {{item.healthString}}</view>
+                <image src="/static/icons/edit.png" class="small-operation-icon" data-mode="{{index}}" bindtap="openHealthDialog"></image>
+              </view>
+              <view class="flex table-expand-line">
+                <view class="table-expand-title">其他</view>
+                <view class="table-expand-text"> {{item.otherString}}</view>
+                <image src="/static/icons/edit.png" class="small-operation-icon" data-mode="{{index}}" bindtap="openOtherDialog"></image>
+              </view>
+              <view class="flex table-expand-line">
+                <view class="table-expand-title">上架时间</view>
+                <view class="table-expand-text"> {{item.timeSting}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      <view wx:else="" class="empty-table">
+        暂无数据，请添加菜品
+      </view >
+    </view>
+  </view>
+</view>
+
+<!-- 新增、修改菜品dialog -->
+<view class="cu-modal {{ showAddDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">{{mode < 0? '新增菜品':'修改菜品'}}</view>
+      <view class="action" bindtap="closeAddDialog">
+        <text class="cuIcon-close text-grey"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <form action="" bindsubmit="handleSubmitAddDialog">
+        <view class="cu-form-group">
+          <view class="title">菜品名字</view>
+          <input id="name" value="{{addForm.name}}" focus="{{true}}" placeholder="输入菜品的名字" bindinput="onInput" data-form="addForm" bindconfirm="handleSubmitAddDialog" maxlength="20"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">菜品价格</view>
+          <input id="price" value="{{addForm.price}}"  bindinput="onInput" bindconfirm="handleSubmitAddDialog" data-form="addForm" maxlength="40"></input>
+          <view class="cu-capsule radius">
+            <view class="cu-tag bg-blue">
+              元
+            </view>
+          </view>
+        </view>
+        <view class="cu-bar bg-white margin-top">
+          <view class="action">
+            菜品图片上传
+          </view>
+        </view>
+        <view class="cu-form-group">
+          <view class="grid col-4 grid-square flex-sub">
+            <view class="solids" bindtap="ChooseImage" wx:if="{{addForm.imgSrc == ''}}">
+              <text class="cuIcon-cameraadd"></text>
+            </view>
+            <view class="bg-img" bindtap="ViewImage" wx:else="" data-url="{{addForm.imgSrc}}">
+              <image src='{{addForm.imgSrc}}' mode='aspectFill'></image>
+              <view class="cu-tag bg-red" catchtap="DelImg">
+                <text class="cuIcon-close"></text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </form>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeAddDialog">取消</button>
+        <button class="cu-btn bg-blue margin-left" bindtap="handleSubmitAddDialog">确定</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 修改偏好的dialog -->
+<view class="cu-modal {{ showChoiceDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">{{'修改偏好'}}</view>
+      <view class="action" bindtap="closeChoiceDialog">
+        <text class="cuIcon-close text-grey"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <form action="" bindsubmit="handleSubmitOtherDialog">
+        <view wx:for="{{choiceForm}}">
+          <view class="cu-form-group margin-top">
+            <view class="title">{{index + 1}}.是否单选</view>
+            <switch checked="{{item.type}}" data-index="{{index}}" bindchange="onSwitchChange"></switch>
+          </view>
+          <view class="cu-form-group">
+            <view class="title">{{index + 1}}.偏好标题</view>
+            <input id="name" value="{{item.name}}" data-index="{{index}}" data-form="choiceForm" bindinput="onInput" maxlength="20"></input>
+          </view>
+          <view class="cu-form-group align-start">
+            <view class="title">{{index + 1}}.偏好内容</view>
+            <textarea id="content" value="{{item.content}}" data-index="{{index}}" data-form="choiceForm" bindinput="onInput" maxlength="80" placeholder="用空格分隔选项"></textarea>
+          </view>
+        </view>
+      </form>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeChoiceDialog">取消</button>
+        <button class="cu-btn line-blue text-blue" bindtap="handleAddChoice">添加</button>
+        <button class="cu-btn bg-blue margin-left" bindtap="handleSubmitChoiceDialog">确定</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 修改健康的dialog -->
+<view class="cu-modal {{ showHealthDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">{{'修改健康'}}</view>
+      <view class="action" bindtap="closeHealthDialog">
+        <text class="cuIcon-close text-grey"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <form action="" bindsubmit="handleSubmitAddDialog">
+        
+        <view class="cu-form-group">
+          <view class="title">热量</view>
+          <input id="energy" value="{{healthForm.energy}}" data-form="healthForm" bindinput="onInput" maxlength="10"></input>
+          <view class="cu-capsule radius">
+            <view class="cu-tag bg-blue">
+              kcal
+            </view>
+          </view>
+        </view>
+
+        <view class="cu-form-group">
+          <view class="title">碳水</view>
+          <input id="carbon" value="{{healthForm.carbon}}" data-form="healthForm" bindinput="onInput" maxlength="10"></input>
+          <view class="cu-capsule radius">
+            <view class="cu-tag bg-blue">
+              g
+            </view>
+          </view>
+        </view>
+
+        <view class="cu-form-group">
+          <view class="title">蛋白质</view>
+          <input id="protein" value="{{healthForm.protein}}" data-form="healthForm" bindinput="onInput" maxlength="10"></input>
+          <view class="cu-capsule radius">
+            <view class="cu-tag bg-blue">
+              g
+            </view>
+          </view>
+        </view>
+
+        <view class="cu-form-group">
+          <view class="title">膳食纤维</view>
+          <input id="fiber" value="{{healthForm.fiber}}" data-form="healthForm" bindinput="onInput" maxlength="10"></input>
+          <view class="cu-capsule radius">
+            <view class="cu-tag bg-blue">
+              g
+            </view>
+          </view>
+        </view>
+
+        <view class="cu-form-group">
+          <view class="title">盐量</view>
+          <input id="salt" value="{{healthForm.salt}}" data-form="healthForm" bindinput="onInput" maxlength="10"></input>
+          <view class="cu-capsule radius">
+            <view class="cu-tag bg-blue">
+              g
+            </view>
+          </view>
+        </view>
+
+        <view class="cu-form-group">
+          <view class="title">脂肪</view>
+          <input id="fat" value="{{healthForm.fat}}" data-form="healthForm" bindinput="onInput" maxlength="10"></input>
+          <view class="cu-capsule radius">
+            <view class="cu-tag bg-blue">
+              g
+            </view>
+          </view>
+        </view>
+
+      </form>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeHealthDialog">取消</button>
+        <button class="cu-btn bg-blue margin-left" bindtap="handleSubmitHealthDialog">确定</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 修改其他的dialog -->
+<view class="cu-modal {{ showOtherDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">{{'修改其他信息'}}</view>
+      <view class="action" bindtap="closeOtherDialog">
+        <text class="cuIcon-close text-grey"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <form action="" bindsubmit="handleSubmitOtherDialog">
+        <view wx:for="{{otherForm}}">
+          <view class="cu-form-group">
+            <view class="title">{{index + 1}}.信息标题</view>
+            <input id="name" value="{{item.name}}" data-index="{{index}}" data-form="otherForm" bindinput="onInput" maxlength="20"></input>
+          </view>
+          <view class="cu-form-group align-start">
+            <view class="title">{{index + 1}}.信息内容</view>
+            <textarea id="content" value="{{item.content}}" data-index="{{index}}" data-form="otherForm" bindinput="onInput" maxlength="80"></textarea>
+          </view>
+        </view>
+      </form>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeOtherDialog">取消</button>
+        <button class="cu-btn line-blue text-blue" bindtap="handleAddOther">添加</button>
+        <button class="cu-btn bg-blue margin-left" bindtap="handleSubmitOtherDialog">确定</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 修改菜品所属种类的dialog -->
+<view class="cu-modal {{ showTypeDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">{{'修改品类'}}</view>
+      <view class="action" bindtap="closeTypeDialog">
+        <text class="cuIcon-close text-grey"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <form action="" bindsubmit="handleSubmitAddDialog">
+        
+        <view class="cu-form-group">
+          <view class="title">热量</view>
+          <input id="energy" value="{{healthForm.energy}}" data-form="healthForm" bindinput="onInput" maxlength="10"></input>
+          <view class="cu-capsule radius">
+            <view class="cu-tag bg-blue">
+              kcal
+            </view>
+          </view>
+        </view>
+
+      </form>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeHealthDialog">取消</button>
+        <button class="cu-btn bg-blue margin-left" bindtap="handleSubmitHealthDialog">确定</button>
+      </view>
+    </view>
   </view>
 </view>

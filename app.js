@@ -1,52 +1,38 @@
 //app.js
+let configData = require('./static/configs/config')
+
 App({
   onLaunch: function() {
-    // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
+    let _this = this
+    if(!wx.cloud) {
+      console.error("初始化云能力失败");
+    }else {
+      wx.cloud.init({
+        env: configData.configData.envID
+      })
+      console.log("已经初始化云能力")
+      this.globalData.initCloud = true
+      this.globalData.db = wx.cloud.database()
+    }
+  },
 
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
-
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
-              }
-            }
-          })
-        }
-      }
-    })
-    // 获取系统状态栏信息
-    wx.getSystemInfo({
-      success: e => {
-        this.globalData.StatusBar = e.statusBarHeight;
-        let capsule = wx.getMenuButtonBoundingClientRect();
-        if (capsule) {
-         	this.globalData.Custom = capsule;
-        	this.globalData.CustomBar = capsule.bottom + capsule.top - e.statusBarHeight;
-        } else {
-        	this.globalData.CustomBar = e.statusBarHeight + 50;
-        }
+  watch(method){
+    var obj = this.globalData;
+    Object.defineProperty(obj,"initCloud", {
+      configurable: true,//描述属性是否配置，以及可否删除 false 时，不能删除当前属性，且不能重新配置当前属性的描述符(有一个小小的意外：true时，可以删除当前属性，可以配置当前属性所有描述符。
+      enumerable: true,//描述属性是否会出现在for in 或者 Object.keys()的遍历中
+      set: function (value) {
+        this._initCloud = value;
+        method(value);
+      },
+      get:function(){
+      // 可以在这里打印一些东西，然后在其他界面调用getApp().globalData.chatList的时候，这里就会执行。
+        return this._initCloud
       }
     })
   },
+
   globalData: {
-    userInfo: null
+    _initCloud: null
   }
 })

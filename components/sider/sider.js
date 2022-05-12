@@ -17,7 +17,8 @@ Component({
   data: {
     modalName: null,
     dish_expand: false,
-    current: 'home'
+    current: 'home',
+    isDish: false
   },
 
   /**
@@ -25,8 +26,13 @@ Component({
    */
   methods: {
     loadCurrent(){
+      if (this.properties._current.includes("dish")){
+        this.setData({
+          isDish: true,
+        })
+      }
       this.setData({
-        current: this.properties._current
+        current: this.properties._current,
       })
     },
     expandDish(){

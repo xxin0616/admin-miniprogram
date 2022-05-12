@@ -1,5 +1,5 @@
 {
-  "projectname": "ColorUI-template",
+  "projectname": "adminend-miniprogram",
   "setting": {
     "compileHotReLoad": true
   },
@@ -20,8 +20,16 @@
           "query": "",
           "launchMode": "default",
           "scene": null
+        },
+        {
+          "name": "菜品",
+          "pathName": "pages/dish/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }
-  }
+  },
+  "libVersion": "2.24.2"
 }
