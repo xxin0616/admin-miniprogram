@@ -96,14 +96,6 @@
               </view>
             </view>
           </view>
-          <view class="cu-item" bindtap="toSetPage">
-            <view class="content">
-              <view class="item-wrapper">
-                <image src="" class="menu-icon"></image>
-                <text class="menu-text {{current == 'dish-set' ? 'blue-text':''}}">套餐管理</text>
-              </view>
-            </view>
-          </view>
         </view>
       </view>
       <view class="cu-item" bindtap="toUserPage">

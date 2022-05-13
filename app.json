@@ -3,7 +3,6 @@
     "pages/index/index",
     "pages/order/index",
     "pages/dish/index",
-    "pages/set/index",
     "pages/type/index",
     "pages/users/index",
     "pages/company/index",

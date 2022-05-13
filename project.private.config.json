@@ -27,6 +27,20 @@
           "query": "",
           "launchMode": "default",
           "scene": null
+        },
+        {
+          "name": "订单",
+          "pathName": "pages/order/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "用户",
+          "pathName": "pages/users/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

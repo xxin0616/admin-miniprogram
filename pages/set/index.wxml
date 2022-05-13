@@ -1,8 +1,0 @@
-<!--pages/set/index.wxml-->
-
-<view>
-  <sider type="dish-set"></sider> 
-  <view class="content-wrapper">
-    <text>pages/set/index.wxml</text>
-  </view>
-</view>

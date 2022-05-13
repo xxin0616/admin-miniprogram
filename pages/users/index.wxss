@@ -1,1 +1,15 @@
 /* pages/users/index.wxss */
+.th1, .td1 {
+  width: 30%;
+}
+.th2, .td2 {
+  width: 30%;
+}
+.th3, .td3 {
+  width: 30%;
+}
+.rightimg {
+  margin-top: 10rpx;
+  height: 90rpx;
+  width: 90rpx;
+}

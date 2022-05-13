@@ -71,7 +71,7 @@ page {
   text-align: left;
 }
 .table-expand-title {
-  width: 120rpx;
+  width: 130rpx;
   height: 40rpx;
   display: block;
   overflow-wrap: break-word;

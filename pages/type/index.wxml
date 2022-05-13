@@ -13,7 +13,7 @@
     <view class="search-wrapper">
       <view class="search-box">
         <image src="/static/icons/search.png" class="search-img"></image>
-        <input type="text" value="{{searchText}}" placeholder="请输入品类名称或ID" placeholder-class="search-text" maxlength="50" bindblur="handleSearch" bindconfirm="handleSeach" bindblur="handleSeach"/>
+        <input type="text" value="{{searchText}}" placeholder="请输入品类名称或ID" placeholder-class="search-text" maxlength="50" bindblur="handleSearch" bindconfirm="handleSeach"/>
         <text class="cuIcon-close lg text-gray" style="margin-right: 20rpx;" bindtap="handleCloseSeach"></text>
       </view>
     </view>

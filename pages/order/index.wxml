@@ -1,7 +1,88 @@
 <!--pages/order/index.wxml-->
 <view>
-  <sider type="order"></sider> 
+  <sider _current="order"></sider> 
   <view class="content-wrapper">
-    <text>pages/order/index.wxml</text>
+    <view class="content-header">
+      <text>订单数量</text>
+      <text class="red-text">{{totalNum}}</text>
+      <button class="cu-btn bg-blue sm pos" bindtap="changePanel">{{panel?'显示所有订单':'显示未完成订单'}}</button>
+      <button class=" cu-btn bg-blue sm pos2" bindtap="handleExport">
+        <text>导出excel</text>
+      </button>
+    </view>
+    <view class="search-wrapper">
+      <view class="search-box">
+        <image src="/static/icons/search.png" class="search-img"></image>
+        <input type="text" value="{{searchText}}" placeholder="请输入手机号或订单ID" placeholder-class="search-text" maxlength="50" bindblur="handleSeach" bindconfirm="handleSeach"/>
+        <text class="cuIcon-close lg text-gray" style="margin-right: 20rpx;" bindtap="handleCloseSeach"></text>
+      </view>
+    </view>
+
+    <view class="table">
+      <view class="tr">
+        <view class="td0"></view>
+        <view class="th1"><text class="table-header-text">手机号</text></view>
+        <view class="th2"><text class="table-header-text">送达时间</text></view>
+        <view class="th3"><text class="table-header-text">操作</text></view>
+      </view>
+        <!-- 内容 -->
+        <!-- 除表头外纵向滑动 -->
+      <scroll-view class="tableY" scroll-y style="height: 900rpx;" wx:if="{{allData.length > 0}}">
+        <view wx:for="{{tableMode?allData:searchData}}" wx:key="index">
+          <view wx:if="{{(panel && item.status != 4) || !panel}}">
+            <view class="tr">
+              <view class="td0" data-active="{{index}}" bindtap="changeActive"><image mode="aspectFit" src="/static/icons/arrow-{{active == index? 'down':'right'}}.png" ></image></view>
+              <view class="td1 text-wrapper" bindtap="changeActive"><text>{{item.orderData.addr.phone}}</text></view>
+              <view class="td2 text-wrapper" bindtap="changeActive"><text>{{item.orderData.time}}</text> </view>
+              <view class="td3 text-wrapper">
+                <button class="cu-btn bg-olive sm" wx:if="{{item.status == 0}}" bindtap="changStatus" data-status="1" data-id= "{{item._id}}">接单</button>
+                <button class="cu-btn bg-yellow sm" wx:if="{{item.status == 1}}" bindtap="changStatus" data-status="2" data-id= "{{item._id}}">开始制作</button>
+                <button class="cu-btn bg-pink sm" wx:if="{{item.status == 2}}" bindtap="changStatus" data-status="3" data-id= "{{item._id}}">开始配送</button>
+                <button class="cu-btn round  sm -grey" wx:if="{{item.status == 3}}">已配送</button>
+                <button class="cu-btn round sm -grey" wx:if="{{item.status == 4}}">完成</button>
+              </view>
+            </view>
+            <view class="expand-area" hidden="{{!(active == index)}}" >
+              <view>
+                订单包含菜品： {{item.cartData.itemData.length}}
+              </view>
+              <view wx:for="{{item.cartData.itemData}}" wx:for-index="id" wx:for-item="dish">
+                <view class="flex table-expand-line">
+                  <view style="width:25%" class="table-expand-title">菜品{{id + 1}}</view>
+                  <view class="table-expand-text"> {{dish.name}} ({{dish.pre.string}}) 共{{dish.count}}份</view>
+                </view>
+              </view>
+              <view class="flex table-expand-line">
+                <view style="width:25%" class="table-expand-title">收货人</view>
+                <view class="table-expand-text"> {{item.orderData.addr.name}}</view>
+              </view>
+              <view class="flex table-expand-line">
+                <view style="width:25%" class="table-expand-title">联系电话</view>
+                <view class="table-expand-text"> {{item.orderData.addr.phone}}</view>
+              </view>
+              <view class="flex table-expand-line">
+                <view style="width:25%" class="table-expand-title">收货地址</view>
+                <view class="table-expand-text"> {{item.orderData.addr.addr}}</view>
+              </view>
+              <view class="flex table-expand-line">
+                <view style="width:25%" class="table-expand-title">实付金额</view>
+                <view class="table-expand-text"> {{item.price}}</view>
+              </view>
+              <view class="flex table-expand-line">
+                <view style="width:25%" class="table-expand-title">下单时间</view>
+                <view class="table-expand-text"> {{item.timeString.overbooking}}</view>
+              </view>
+              <view class="flex table-expand-line">
+                <view style="width:25%" class="table-expand-title">订单备注</view>
+                <view class="table-expand-text"> {{item.orderData.note}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      <view wx:else="" class="empty-table">
+        暂无数据
+      </view >
+    </view>
   </view>
 </view>
