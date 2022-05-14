@@ -1,6 +1,41 @@
 <view>
   <sider type="home"></sider> 
-  <view class="content-wrapper">
-    <text>首页</text>
-  </view>
+  <scroll-view scroll-y="{{true}}" class="content-wrapper">
+    <view >
+      <button class="bd3">
+        <text class="word12" bindtap="stopMaking">今日停止营业但可以接单</text>
+      </button>
+    </view>
+
+    <view class="wrapper">
+      <button class="bd4" bindtap="stopGettingOrders"><text class="txt5">停止接单</text></button>
+      <button class="bd5" bindtap="sendNewMessage"><text class="txt6">向用户发送新消息</text></button>
+    </view>
+
+    <view class="wrapper3">
+      <view class="bg bgred">
+        <image src="../../static/icons/money.png" class="icon"></image>
+        <text class="text"> 今日营业额</text>
+        <text class="number red">12222</text>
+      </view>
+
+      <view class="bg bgblue">
+        <image src="../../static/icons/addusers.png" class="icon"></image>
+        <text class="text"> 今日新增</text>
+        <text class="number yelow">12222</text>
+      </view>
+
+      <view class="bg bgyellog">
+        <image src="../../static/icons/users.png" class="icon"></image>
+        <text class="text"> 总用户数</text>
+        <text class="number blue">12222</text>
+      </view>
+    </view>
+
+    <view class="wrapper5"><text>过往每月营业的数据</text></view>
+
+    <view class="echarts">
+      <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+    </view>
+  </scroll-view>
 </view>

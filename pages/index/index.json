@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "sider":"/components/sider/sider"
+    "sider":"/components/sider/sider",
+    "ec-canvas": "/ec-canvas/ec-canvas"
   }
 }

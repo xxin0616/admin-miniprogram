@@ -1,7 +1,81 @@
 <!--pages/company/index.wxml-->
 <view>
   <sider _current="company"></sider> 
-  <view class="content-wrapper">
-    <text>pages/company/index.wxml</text>
-  </view>
+  <scroll-view scroll-y="{{true}}" class="content-wrapper">
+    <form action="" bindsubmit="submitForm">
+      <view class="title">
+        公司名称
+      </view>
+      <view class="input">
+        <input type="text" value="{{form.name}}" name="name" maxlength="30"/>
+      </view>
+      
+      <view class="title">
+        联系微信号
+      </view>
+      <view class="input">
+        <input type="text" value="{{form.wx}}" name="wx" maxlength="30"/>
+      </view>
+
+      <view class="title">
+        联系电话
+      </view>
+      <view class="input">
+        <input type="text" value="{{form.phone}}" name="phone" maxlength="30"/>
+      </view>
+
+      <view class="title">
+        营业时间
+      </view>
+      <view class="input">
+        <input type="text" value="{{form.time}}" name="time" maxlength="30"/>
+      </view>
+
+      <view class="title">
+        特色标签
+      </view>
+      <view class="input">
+        <input type="text" value="{{form.label}}" name="label" maxlength="60" placeholder="请用空格隔开"/>
+      </view>
+
+      <view class="title">
+        公司地址
+      </view>
+      <view class="cu-form-group margin-top line3">
+        <textarea value="{{form.addr}}" name="addr" maxlength="200" ></textarea>
+      </view>
+
+      <view class="title">
+        公司简介
+      </view>
+      <view class="cu-form-group margin-top line4">
+        <textarea maxlength="600" value="{{form.desc}}" name="desc" ></textarea>
+      </view>
+
+      <view class="title">
+        微信二维码
+      </view>
+      <view class="codewrapper">
+        <view class="image" bindtap="ChooseImage" wx:if="{{codeimg == ''}}">
+          <text class="cuIcon-cameraadd cameradd"></text>
+        </view>
+        <view wx:else="">
+          <image class="image" mode='aspectFit' src="{{codeimg}}"></image>
+          <view class="cu-tag bg-red posclose" catchtap="DelImg" >
+            <text class="cuIcon-close"></text>
+          </view>
+        </view>
+      </view>
+
+      <view class="flex bntwrapper">
+        <button  class="bd1" form-type='submit'>
+          <text lines="1" class="word4">立即修改</text>
+        </button>
+        <button bindtap="reset" class="bd3">
+          <text lines="1" class="info2">取消</text>
+        </button>
+      </view>
+    </form>
+
+  </scroll-view>
 </view>

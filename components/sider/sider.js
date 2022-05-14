@@ -72,14 +72,9 @@ Component({
         url: '../dish/index',
       })
     },
-    toSetPage(){
-      wx.redirectTo({
-        url: '../set/index',
-      })
-    },
     toUserPage(){
       wx.redirectTo({
-        url: '../user/index',
+        url: '../users/index',
       })
     },
     toCompanyPage(){

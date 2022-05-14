@@ -232,7 +232,6 @@ Page({
       success: (res) => {
         let tmp = this.data.addForm
         tmp.imgSrc = res.tempFilePaths[0]
-        console.log("图片的额路劲", tmp.imgSrc)
         this.setData({
           addForm: tmp
         })

@@ -1,8 +1,47 @@
 <!--pages/other/index.wxml-->
 <view>
-  <sider type="other"></sider> 
-  <view class="content-wrapper">
-    <text>pages/other/index.wxml</text>
-  </view>
+  <sider _current="other"></sider> 
+  <scroll-view scroll-y="{{true}}" class="content-wrapper">
+    <view class="flex header">
+      <view class="title">首页轮播图</view>
+      <view class="size"> 750*576尺寸比例</view>
+      <button class="cu-btn bg-blue sm pos1" bindtap="saveList" data-type="front">保存</button>
+      <image src="../../static/icons/add.png" class="icon pos" bindtap="addImage" data-type = "front"></image>
+    </view>
+
+    <view class="imageWrapper" wx:for="{{frontSwiper}}" wx:key="index">
+      <view class="wrapper">
+        <view class="image" bindtap="ChooseImage" wx:if="{{item == ''}}" data-type="front" data-index="{{index}}">
+          <text class="cuIcon-cameraadd cameradd"></text>
+        </view>
+        <image class="image" mode='aspectFit' src="{{item}}" wx:else=""></image>
+      </view>
+      
+      <image src="../../static/icons/delete.png" class="icon pos3" bindtap="deleteImage" data-type="front" data-index="{{index}}"></image>
+      <view class="line"></view>
+
+    </view>
+    
+    <view class="line"></view>
+    <view class="flex header">
+      <view class="title">点餐轮播图</view>
+      <view class="size"> 750*576尺寸比例</view>
+      <button class="cu-btn bg-blue sm pos1" bindtap="saveList" data-type="dish">保存</button>
+      <image src="../../static/icons/add.png" class="icon pos" bindtap="addImage" data-type = "dish"></image>
+    </view>
+
+    <view class="imageWrapper" wx:for="{{dishSwiper}}" wx:key="index">
+      <view class="wrapper">
+        <view class="image" bindtap="ChooseImage" wx:if="{{item == ''}}" data-type="dish" data-index="{{index}}">
+          <text class="cuIcon-cameraadd cameradd"></text>
+        </view>
+        <image class="image" mode='aspectFit' src="{{item}}" wx:else=""></image>
+      </view>
+      
+      <image src="../../static/icons/delete.png" class="icon pos3" bindtap="deleteImage" data-type="dish" data-index="{{index}}"></image>
+      <view class="line"></view>
+    </view>
+
+  </scroll-view>
 </view>
 
