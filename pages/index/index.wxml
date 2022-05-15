@@ -2,13 +2,13 @@
   <sider type="home"></sider> 
   <scroll-view scroll-y="{{true}}" class="content-wrapper">
     <view >
-      <button class="bd3">
-        <text class="word12" bindtap="stopMaking">今日停止营业但可以接单</text>
+      <button class="bd3" bindtap="handleChangeStatus" data-status="{{status == '1'?'2':'1'}}" >
+        <text class="word12" >{{status == '1'?'开始营业':'停止营业但可以接单'}}</text>
       </button>
     </view>
 
     <view class="wrapper">
-      <button class="bd4" bindtap="stopGettingOrders"><text class="txt5">停止接单</text></button>
+      <button class="bd4" bindtap="handleChangeStatus" data-status="0"><text class="txt5">{{status == '0'?'已停止接单':'停止接单'}}</text></button>
       <button class="bd5" bindtap="sendNewMessage"><text class="txt6">向用户发送新消息</text></button>
     </view>
 
@@ -38,4 +38,33 @@
       <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
     </view>
   </scroll-view>
+</view>
+
+<view class="cu-modal {{ showDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">向用户发送新消息</view>
+      <view class="action" bindtap="closeDialog">
+        <text class="cuIcon-close text-grey"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <form action="" bindsubmit="handleSubmitAddDialog">
+        <view class="cu-form-group">
+          <view class="title">消息标题</view>
+          <input id="title" value="{{form.title}}" focus="{{true}}" bindinput="onInput"  bindconfirm="handleSubmitDialog" maxlength="20"></input>
+        </view>
+        <view class="cu-form-group align-start">
+          <view class="title">消息内容</view>
+          <textarea maxlength="200" disabled="{{modalName!=null}}" id="content" value="{{form.content}}"  bindinput="onInput" bindconfirm="handleSubmitDialog" ></textarea>
+        </view>
+      </form>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeDialog">取消</button>
+        <button class="cu-btn bg-blue margin-left" bindtap="handleSubmitDialog">确定</button>
+      </view>
+    </view>
+  </view>
 </view>

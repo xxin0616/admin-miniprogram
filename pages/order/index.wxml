@@ -53,6 +53,10 @@
                 </view>
               </view>
               <view class="flex table-expand-line">
+                <view style="width:25%" class="table-expand-title">厨师</view>
+                <view class="table-expand-text"> {{item.cooker}}</view>
+              </view>
+              <view class="flex table-expand-line">
                 <view style="width:25%" class="table-expand-title">收货人</view>
                 <view class="table-expand-text"> {{item.orderData.addr.name}}</view>
               </view>
@@ -83,6 +87,31 @@
       <view wx:else="" class="empty-table">
         暂无数据
       </view >
+    </view>
+  </view>
+</view>
+
+<view class="cu-modal {{ showDialog?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">输入厨师的名字</view>
+      <view class="action" bindtap="closeDialog">
+        <text class="cuIcon-close text-grey"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <form action="" bindsubmit="handleSubmitAddDialog">
+        <view class="cu-form-group">
+          <view class="title">厨师名字</view>
+          <input id="name" value="{{cooker}}" focus="{{true}}" placeholder="输入厨师的名字" bindinput="onInput" bindconfirm="handleSubmitDialog" maxlength="20"></input>
+        </view>
+      </form>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeDialog">取消</button>
+        <button class="cu-btn bg-blue margin-left" bindtap="handleSubmitDialog">确定</button>
+      </view>
     </view>
   </view>
 </view>

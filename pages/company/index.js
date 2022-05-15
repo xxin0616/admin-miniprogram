@@ -34,7 +34,7 @@ Page({
     let tmp = wx.getStorageSync('companyData')
     tmp = JSON.parse(tmp)
     let id = tmp._id
-    form.label = form.label.trim().split(/\s+/)
+    form.tags = form.tagString.trim().split(/\s+/)
     let _this = this
     db.collection("company_info").doc(id).update({
       data: {
@@ -44,7 +44,7 @@ Page({
         wx: form.wx,
         desc: form.desc,
         time: form.time,
-        label: form.label
+        tags: form.tags
       },
       success: function(res) {
         wx.showToast({
@@ -69,13 +69,13 @@ Page({
   },
 
   process(data){
-    let tmp = data.label
+    let tmp = data.tags
     let str = ""
     for (let i = 0; i< tmp.length; i++) {
       str = str + tmp[i] + ' '
     }
     str = str.substr(0, str.length - 1);
-    data.label = str
+    data.tagString = str
     return data
   },
   ChooseImage() {
@@ -111,24 +111,28 @@ Page({
 
   async initPage(){
     let system = wx.getStorageSync('companyData')
-    if (system ==undefined) {
+    if (system == undefined) {
       system = await db.collection("company_info").get()
       wx.setStorageSync('companyData', JSON.stringify(system.data[0]))
-      let tmp = system.data[0]
+      system = system.data[0]
+    } else {
+      system = JSON.parse(system)
     }
+    system = this.process(system)
     this.setData({
-      form: tmp
+      form: system
     })
+    console.log(this.data.form)
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    // if (app.globalData.initCloud) { // 云初始化已完成
-    //   this.initPage() // do something
-    // } else {
-    //   app.watch(() => this.initPage())
-    // }
+    if (app.globalData.initCloud) { // 云初始化已完成
+      this.initPage() // do something
+    } else {
+      app.watch(() => this.initPage())
+    }
   },
 
   /**

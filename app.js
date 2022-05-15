@@ -11,8 +11,28 @@ App({
         env: configData.configData.envID
       })
       console.log("已经初始化云能力")
-      this.globalData.initCloud = true
       this.globalData.db = wx.cloud.database()
+      wx.cloud.callFunction({
+        name:"adminEndGetData",
+        data:{},
+        complete:res=>{
+          console.log("调用云函数的结果",res)
+          wx.setStorageSync('dishData', JSON.stringify(res.result.dish))
+          wx.setStorageSync('typeData', JSON.stringify(res.result.type))
+          wx.setStorageSync('userData', JSON.stringify(res.result.user))
+          wx.setStorageSync('orderData', JSON.stringify(res.result.order))
+          wx.setStorageSync('companyData', JSON.stringify(res.result.company))
+          wx.setStorageSync('systemData', JSON.stringify(res.result.system))
+          
+          console.log("客户端存储中的 openId",wx.getStorageSync('openId'))
+          console.log("客户端存储中的 dishData",wx.getStorageSync('dishData'))
+          console.log("客户端存储中的 typeData",wx.getStorageSync('typeData'))
+          console.log("客户端存储中的 companyData",wx.getStorageSync('companyData'))
+          console.log("客户端存储中的 systemData",wx.getStorageSync('systemData'))
+          
+          _this.globalData.initCloud = true
+        }
+      })
     }
   },
 

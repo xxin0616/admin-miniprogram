@@ -22,6 +22,84 @@ Page({
     dishForm:[],
     checkedArray:[]
   },
+  handleExport() {
+    let that = this;
+    wx.showLoading({
+      title: '正在生成，请稍等',
+    })
+    wx.cloud.callFunction({
+      name: "exportExcelFile",
+      data:{
+        collection: 'type_info'
+      },  
+      success(res) {
+        console.log("生成excel文件成功", res.result.fileID)
+        that.getFileUrl(res.result.fileID);
+      },
+      fail(res) {
+        console.log("生成excel文件失败", res)
+        wx.hideLoading()
+        wx.showToast({
+          title: '生成excel文件失败',
+          icon:'error',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+ //获取云存储文件下载地址，这个地址有效期一天
+  getFileUrl(fileID) {
+    let that = this;
+    wx.cloud.getTempFileURL({
+      fileList: [fileID],
+      success: res => {
+        console.log("文件下载链接", res.fileList[0].tempFileURL)
+        that.setData({
+          fileUrl: res.fileList[0].tempFileURL
+        })
+        that.copyFileUrl()
+      },
+      fail: err => {
+        console.log("云文件下载失败")
+        wx.hideLoading()
+        wx.showToast({
+          title: '生成excel文件失败',
+          icon:'error',
+          duration: 2000
+        })
+      }
+    })
+  },
+ //复制excel文件下载链接
+  copyFileUrl() {
+    let that = this
+    wx.setClipboardData({
+      data: that.data.fileUrl,
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            console.log("复制成功", res.data) // data
+            wx.hideLoading()
+            wx.showToast({
+              title: '下载链接已复制',
+              icon:'success',
+              duration: 4000
+            })
+          },
+          fail(res){
+            console.log("出错了",res)
+            wx.hideLoading()
+            wx.showToast({
+              title: '生成excel文件失败',
+              icon:'error',
+              duration: 2000
+            })
+          }
+        })
+      }
+    })
+  },
   checkboxChange(e) {
     this.data.checkedArray = e.detail.value
   },

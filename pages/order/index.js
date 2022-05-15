@@ -15,7 +15,89 @@ Page({
     allData: [],
     searchData: [],
     searchText:"",
-    active:null
+    active:null,
+    fileUrl: '',
+    showDialog: false,
+    currentID:""
+  },
+
+  handleExport() {
+    let that = this;
+    wx.showLoading({
+      title: '正在生成，请稍等',
+    })
+    wx.cloud.callFunction({
+      name: "exportExcelFile",
+      data:{
+        collection: 'order_info'
+      },  
+      success(res) {
+        console.log("生成excel文件成功", res.result.fileID)
+        that.getFileUrl(res.result.fileID);
+      },
+      fail(res) {
+        console.log("生成excel文件失败", res)
+        wx.hideLoading()
+        wx.showToast({
+          title: '生成excel文件失败',
+          icon:'error',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+ //获取云存储文件下载地址，这个地址有效期一天
+  getFileUrl(fileID) {
+    let that = this;
+    wx.cloud.getTempFileURL({
+      fileList: [fileID],
+      success: res => {
+        console.log("文件下载链接", res.fileList[0].tempFileURL)
+        that.setData({
+          fileUrl: res.fileList[0].tempFileURL
+        })
+        that.copyFileUrl()
+      },
+      fail: err => {
+        console.log("云文件下载失败")
+        wx.hideLoading()
+        wx.showToast({
+          title: '生成excel文件失败',
+          icon:'error',
+          duration: 2000
+        })
+      }
+    })
+  },
+ //复制excel文件下载链接
+  copyFileUrl() {
+    let that = this
+    wx.setClipboardData({
+      data: that.data.fileUrl,
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            console.log("复制成功", res.data) // data
+            wx.hideLoading()
+            wx.showToast({
+              title: '下载链接已复制',
+              icon:'success',
+              duration: 4000
+            })
+          },
+          fail(res){
+            console.log("出错了",res)
+            wx.hideLoading()
+            wx.showToast({
+              title: '生成excel文件失败',
+              icon:'error',
+              duration: 2000
+            })
+          }
+        })
+      }
+    })
   },
 
   changePanel(){
@@ -121,18 +203,73 @@ Page({
       title: '正在加载数据中',
     })
   },
+  handleSubmitDialog(){
+    let id = this.data.currentID
+    let cooker = this.data.cooker
+    let _this = this
+    db.collection('order_info').doc(id).update({
+      data: {
+        status: '2',
+        cooker: cooker
+      },
+      success: function(res) {
+        console.log("成功了嘛",res)
+        wx.showToast({
+          title: '修改成功',
+          icon: 'success',
+          duration: 2000
+        })
+        let orderList = _this.data.allData
+        let index = orderList.findIndex((item)=>{
+          return item._id == id
+        })
+        orderList[index].status = '2'
+        orderList[index].cooker = cooker
 
-  handleExport(){
-
+        let searchList = _this.data.searchData
+        index = searchList.findIndex((item)=>{
+          return item._id == id
+        })
+        searchList[index].status = '2'
+        searchList[index].cooker = cooker
+        _this.setData({
+          allData: orderList,
+          searchData: searchList
+        })
+      },
+      fall:res=>{
+        wx.showToast({
+          title: '修改失败',
+          icon: 'error',
+          duration: 2000
+        })
+      }
+    })
+  },
+  onInput(e){
+    this.data.cooker = e.detail.value
+  },
+  closeDialog(){
+    this.setData({
+      showDialog: false
+    })
   },
 
   changStatus(e){
     let id = e.currentTarget.dataset.id
     let status = e.currentTarget.dataset.status
+
+    if (status == '2') {
+      this.data.currentID = id
+      this.setData({
+        showDialog: true
+      })
+      return
+    }
     let _this = this
     db.collection('order_info').doc(id).update({
       data: {
-        status: status
+        status: status,
       },
       success: function(res) {
         console.log("成功了嘛",res)

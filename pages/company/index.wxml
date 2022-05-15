@@ -35,7 +35,7 @@
         特色标签
       </view>
       <view class="input">
-        <input type="text" value="{{form.label}}" name="label" maxlength="60" placeholder="请用空格隔开"/>
+        <input type="text" value="{{form.tagString}}" name="tagString" maxlength="60" placeholder="请用空格隔开"/>
       </view>
 
       <view class="title">

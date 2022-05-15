@@ -29,8 +29,83 @@ Page({
     choiceForm:[{type:true, name:"", content:""}]
   },
 
-  openTypeDialog(e) {
-    
+  handleExport() {
+    let that = this;
+    wx.showLoading({
+      title: '正在生成，请稍等',
+    })
+    wx.cloud.callFunction({
+      name: "exportExcelFile",
+      data:{
+        collection: 'dish_info'
+      },  
+      success(res) {
+        console.log("生成excel文件成功", res.result.fileID)
+        that.getFileUrl(res.result.fileID);
+      },
+      fail(res) {
+        console.log("生成excel文件失败", res)
+        wx.hideLoading()
+        wx.showToast({
+          title: '生成excel文件失败',
+          icon:'error',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+ //获取云存储文件下载地址，这个地址有效期一天
+  getFileUrl(fileID) {
+    let that = this;
+    wx.cloud.getTempFileURL({
+      fileList: [fileID],
+      success: res => {
+        console.log("文件下载链接", res.fileList[0].tempFileURL)
+        that.setData({
+          fileUrl: res.fileList[0].tempFileURL
+        })
+        that.copyFileUrl()
+      },
+      fail: err => {
+        console.log("云文件下载失败")
+        wx.hideLoading()
+        wx.showToast({
+          title: '生成excel文件失败',
+          icon:'error',
+          duration: 2000
+        })
+      }
+    })
+  },
+ //复制excel文件下载链接
+  copyFileUrl() {
+    let that = this
+    wx.setClipboardData({
+      data: that.data.fileUrl,
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            console.log("复制成功", res.data) // data
+            wx.hideLoading()
+            wx.showToast({
+              title: '下载链接已复制',
+              icon:'success',
+              duration: 4000
+            })
+          },
+          fail(res){
+            console.log("出错了",res)
+            wx.hideLoading()
+            wx.showToast({
+              title: '生成excel文件失败',
+              icon:'error',
+              duration: 2000
+            })
+          }
+        })
+      }
+    })
   },
   openChoiceDialog(e){
     let data = e.currentTarget.dataset
@@ -374,25 +449,89 @@ Page({
       active: active
     })
   },
-  initPage(){
+  changeDishStatus(e){
+    let data = e.currentTarget.dataset
     let _this = this
-    wx.showLoading({
-      title: '正在加载数据中',
+    wx.showModal({
+      title: '确认操作提示',
+      content: '确认 '+ data.name +' '+ (data.status == '1'?'售罄嘛':'开售嘛'),
+      confirmColor:'#4B81FF',
+      success (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          _this.changeStatus(data.id, data.status)
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
-    db.collection("dish_info").get({
-      complete:(res) => {
-        let tmp = _this.process(res.data)
+  },
+  changeStatus(id, status){
+    let data 
+    if(status == '1'){
+      data = '0'
+    } else {
+      data='1'
+    }
+    let _this = this
+    db.collection('dish_info').doc(id).update({
+      data:{
+        status: data
+      },
+      success: (res) => {
+        let storage = wx.getStorageSync('dishData')
+        storage = JSON.parse(storage)
+        let index = storage.findIndex((item)=>{
+          return item._id = id
+        })
+        storage[index].status = data
+        wx.setStorageSync('dishData', JSON.stringify(storage))
+        let tmp = _this.data.allData
+        tmp[index].status = data
         this.setData({
-          totalNum: res.data.length,
-          allData: tmp,
-          tableMode: true,
-          searchText: ""
+          allData: tmp
+        })
+        wx.showToast({
+          title: '修改成功',
+          icon: 'success',
+          duration: 1000
         })
       }
     })
-    wx.hideLoading({
-      title: '正在加载数据中',
-    })
+  },
+  initPage(){
+    let storage = wx.getStorageSync('dishData')
+    let _this = this
+    if (storage == undefined) {
+      
+      wx.showLoading({
+        title: '正在加载数据中',
+      })
+      db.collection("dish_info").get({
+        complete:(res) => {
+          let tmp = _this.process(res.data)
+          this.setData({
+            totalNum: res.data.length,
+            allData: tmp,
+            tableMode: true,
+            searchText: ""
+          })
+        }
+      })
+      wx.hideLoading({
+        title: '正在加载数据中',
+      })
+    } else {
+      storage = JSON.parse(storage)
+      let tmp = _this.process(storage)
+      this.setData({
+        totalNum: storage.length,
+        allData: tmp,
+        tableMode: true,
+        searchText: ""
+      })
+    }
+    
   },
   handleCloseSeach(){
     this.setData({
@@ -459,7 +598,6 @@ Page({
           console.log("===============>")
           this.closeAddDialog()
           this.refreshPage()
-          
         }
       })
     } else {
